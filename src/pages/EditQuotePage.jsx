@@ -1,9 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, } from 'react-router-dom';
 import { doc, getDoc, setDoc } from "firebase/firestore"; // <--- NUOVI IMPORT FIREBASE
 import { db } from "../firebase"; // <--- IL TUO FILE DI COLLEGAMENTO
 import {
-  ArrowLeft, Save, Trash2, Plus, Copy, ArrowUp, ArrowDown, X, Image as ImageIcon, Calculator
+  LinkIcon, Save, Trash2, Plus, Copy, ArrowUp, ArrowDown, X, Image as ImageIcon, Calculator
 } from 'lucide-react';
 
 import { DEFAULT_TEAM } from '../config/defaultTeam';
@@ -321,31 +321,40 @@ export default function EditQuotePage() { // Non servono più props qui
     }
   };
 
+
+  const shareQuote = () => {
+    // Genera l'URL pubblico basandosi su dove ti trovi (Vercel o locale)
+    const shareUrl = `${window.location.origin}/quote/${quoteId}`;
+
+    // Copia negli appunti
+    navigator.clipboard.writeText(shareUrl)
+      .then(() => alert("Link copiato negli appunti! Ora puoi incollarlo su WhatsApp."))
+      .catch(() => alert("Errore nel copiare il link."));
+  };
+
   if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-500">Caricamento dal Cloud...</div>;
 
   return (
     <div className="bg-[#F5F5F7] min-h-screen font-sans pb-32">
       <header className="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link to="/admin" className="p-2 rounded-full hover:bg-gray-100 text-gray-500 transition-colors">
-              <ArrowLeft size={20} />
-            </Link>
-            <h1 className="text-xl font-bold text-gray-900 hidden sm:block">
-              {quoteId === 'new' ? 'Nuovo Preventivo' : 'Modifica Preventivo'}
-            </h1>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full tabular-nums">
-              {new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(liveSummary.total)}
-            </span>
+        <div className="flex items-center gap-3">
+          {/* Tasto Condividi: appare solo se il preventivo è già stato salvato (ha un ID) */}
+          {quoteId && quoteId !== 'new' && (
             <button
-              onClick={handleSave}
-              className="bg-black hover:bg-gray-800 text-white px-5 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-all shadow-sm"
+              onClick={shareQuote}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-bold hover:bg-blue-100 transition-all border border-blue-100"
             >
-              <Save size={16} /> Salva Online
+              <LinkIcon size={16} />
+              <span className="hidden sm:inline">Copia Link Cliente</span>
             </button>
-          </div>
+          )}
+
+          <button
+            onClick={handleSave}
+            className="bg-black hover:bg-gray-800 text-white px-5 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-all shadow-sm"
+          >
+            <Save size={16} /> Salva Online
+          </button>
         </div>
       </header>
 
