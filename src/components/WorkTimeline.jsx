@@ -49,7 +49,7 @@ const hourWidth = typeof window !== 'undefined' && window.innerWidth < 768 ? 200
 
 
   return (
-    <div className="py-6 md:py-12 max-w-[1200px] mx-auto overflow-visible bg-white font-sans select-none px-4">
+    <div className="py-6 md:py-12 max-w-[1200px] mx-auto overflow-visible bg-white font-sans select-none ">
       {sortedDays.map((day) => {
         const daySections = [...daysMap[day]].sort((a, b) => a.startTime.localeCompare(b.startTime));
         
@@ -69,7 +69,7 @@ const hourWidth = typeof window !== 'undefined' && window.innerWidth < 768 ? 200
         return (
           <div key={day} className="relative mb-32 md:mb-48 ml-8 md:ml-16 pl-6 md:pl-10 border-l border-gray-100 last:mb-20">
             <div className="absolute left-[-11px] top-0 w-5 h-5 bg-white border border-gray-900 rounded-full flex items-center justify-center text-[9px] font-black z-50 shadow-sm uppercase italic">
-              d{day}
+              G{day}
             </div>
 
             <div 

@@ -322,15 +322,14 @@ export default function EditQuotePage() { // Non servono più props qui
   };
 
 
-  const shareQuote = () => {
-    // Genera l'URL pubblico basandosi su dove ti trovi (Vercel o locale)
-    const shareUrl = `${window.location.origin}/quote/${quoteId}`;
-
-    // Copia negli appunti
-    navigator.clipboard.writeText(shareUrl)
-      .then(() => alert("Link copiato negli appunti! Ora puoi incollarlo su WhatsApp."))
-      .catch(() => alert("Errore nel copiare il link."));
-  };
+ const shareQuote = () => {
+  // window.location.origin restituisce "https://preventivo-pro-casa-parquet.vercel.app"
+  // quando sei sul sito principale.
+  const shareUrl = `${window.location.origin}/quote/${quoteId}`;
+  
+  navigator.clipboard.writeText(shareUrl)
+    .then(() => alert("Link copiato! Ora puoi inviarlo al cliente."));
+};
 
   if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-500">Caricamento dal Cloud...</div>;
 

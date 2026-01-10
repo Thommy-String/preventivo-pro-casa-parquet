@@ -11,7 +11,7 @@ export default function TeamSection({ teamMembers }) {
         <div className="flex items-center gap-2 opacity-40 mb-1">
           <Users size={14} />
           <span className="text-[11px] font-bold uppercase tracking-widest text-[#1d1d1f]">
-            Al tuo servizio
+            Seguiranno questo lavoro
           </span>
         </div>
       </div>

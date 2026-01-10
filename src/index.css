@@ -2,12 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Per nascondere la scrollbar, ma mantenere la funzionalità di scorrimento */
-.custom-scrollbar-hide::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-
-.custom-scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}

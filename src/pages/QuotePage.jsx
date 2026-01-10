@@ -43,7 +43,7 @@ export default function QuotePage() {
   const displayDuration = quote.duration || (calculatedDays > 0 ? `${calculatedDays} Giorni` : "Da definire");
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7] font-sans selection:bg-[#cce9ff] pb-20 pt-6 md:pt-12">
+    <div className="min-h-screen font-sans selection:bg-[#cce9ff] pb-20 pt-6 md:pt-12">
 
       <main className="max-w-[960px] mx-auto bg-white min-h-[1000px] shadow-[0_24px_60px_-12px_rgba(0,0,0,0.06)] sm:rounded-[32px] overflow-hidden relative">
 
@@ -63,7 +63,7 @@ export default function QuotePage() {
 
             <div className="flex flex-wrap items-center gap-x-4 gap-y-5 text-[16px] md:text-[18px] text-[#86868b] tracking-tight">
               <div className="flex items-center gap-1.5">
-                <span className="font-medium text-gray-400">Per</span>
+                <span className="text-xl font-medium text-gray-400">Per</span>
                 <span className="text-xl text-[#1d1d1f] font-bold">{quote.clientName}</span>
               </div>
               <div className="flex items-center gap-2">
@@ -75,7 +75,7 @@ export default function QuotePage() {
                 <div className="flex items-center gap-2 font-medium">
                   <span className="text-[#1d1d1f] font-bold">{displayDuration}</span>
                   <span className="text-gray-200">•</span>
-                  <span>Inizio {quote.estimatedStart || "da definire"}</span>
+                  <span>Inizio lavori {quote.estimatedStart || "da definire"}</span>
                 </div>
               </div>
             </div>
