@@ -261,25 +261,45 @@ export default function EditQuotePage() { // Non servono più props qui
 
 
 
-  // Aggiungi questo handler dentro EditQuotePage
   const setPaymentStrategy = (type, value = 0) => {
     const total = liveSummary.total;
     let plan = [];
 
+    // Assicuriamoci che il valore sia numerico per i calcoli
+    const numericValue = parseFloat(value) || 0;
+
     if (type === 'PERCENTAGE') {
-      const deposit = (total * value) / 100;
+      const deposit = (total * numericValue) / 100;
       plan = [
-        { label: "Acconto Iniziale", amount: deposit, percentage: value, dueDate: "All'accettazione del preventivo", description: "Necessario per l'approvvigionamento materiali e pianificazione cantiere.", isPaid: false },
-        { label: "Saldo Finale", amount: total - deposit, percentage: 100 - value, dueDate: "A fine lavori", description: "Da versare a seguito del collaudo finale.", isPaid: false }
+        { label: "Acconto Iniziale", amount: deposit, percentage: numericValue, dueDate: "All'accettazione del preventivo", description: "Necessario per l'approvvigionamento materiali e pianificazione cantiere.", isPaid: false },
+        { label: "Saldo Finale", amount: total - deposit, percentage: 100 - numericValue, dueDate: "A fine lavori", description: "Da versare a seguito del collaudo finale.", isPaid: false }
       ];
     } else if (type === 'FIXED') {
       plan = [
-        { label: "Acconto Iniziale", amount: value, dueDate: "All'accettazione", description: "Quota fissa di prenotazione.", isPaid: false },
-        { label: "Saldo Finale", amount: total - value, dueDate: "A fine lavori", isPaid: false }
+        { label: "Acconto Iniziale", amount: numericValue, dueDate: "All'accettazione", description: "Quota fissa di prenotazione.", isPaid: false },
+        { label: "Saldo Finale", amount: total - numericValue, dueDate: "A fine lavori", isPaid: false }
+      ];
+    } else if (type === 'FIRST_DAY') {
+      // --- NUOVA LOGICA AGGIUNTA ---
+      plan = [
+        {
+          label: "1° SAL (Stato Avanzamento)",
+          amount: numericValue,
+          dueDate: "Al termine della 1ª giornata",
+          description: "Quota da versare alla fine del primo giorno di posa/lavoro.",
+          isPaid: false
+        },
+        {
+          label: "Saldo Finale",
+          amount: total - numericValue,
+          dueDate: "A fine lavori",
+          description: "A conclusione delle opere.",
+          isPaid: false
+        }
       ];
     } else {
       plan = [
-        { label: "Soluzione Unica", amount: total, dueDate: "A fine lavori", description: "Nessun acconto richiesto. Pagamento integrale al termine della posa. Nessun acconto necessario.", isPaid: false }
+        { label: "Soluzione Unica", amount: total, dueDate: "A fine lavori", description: "Nessun acconto richiesto. Pagamento integrale al termine della posa.", isPaid: false }
       ];
     }
 
@@ -322,14 +342,14 @@ export default function EditQuotePage() { // Non servono più props qui
   };
 
 
- const shareQuote = () => {
-  // window.location.origin restituisce "https://preventivo-pro-casa-parquet.vercel.app"
-  // quando sei sul sito principale.
-  const shareUrl = `${window.location.origin}/quote/${quoteId}`;
-  
-  navigator.clipboard.writeText(shareUrl)
-    .then(() => alert("Link copiato! Ora puoi inviarlo al cliente."));
-};
+  const shareQuote = () => {
+    // window.location.origin restituisce "https://preventivo-pro-casa-parquet.vercel.app"
+    // quando sei sul sito principale.
+    const shareUrl = `${window.location.origin}/quote/${quoteId}`;
+
+    navigator.clipboard.writeText(shareUrl)
+      .then(() => alert("Link copiato! Ora puoi inviarlo al cliente."));
+  };
 
   if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-500">Caricamento dal Cloud...</div>;
 
@@ -366,21 +386,88 @@ export default function EditQuotePage() { // Non servono più props qui
               <span className="w-1 h-6 bg-blue-500 rounded-full"></span> Dettagli Progetto
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+              {/* Nome Progetto */}
               <div className="md:col-span-2">
                 <Label>Nome Progetto</Label>
-                <StyledInput name="projectName" value={editingQuote.projectName} onChange={handleDetailsChange} placeholder="Es. Ristrutturazione Bagno" />
+                <StyledInput
+                  name="projectName"
+                  value={editingQuote.projectName}
+                  onChange={handleDetailsChange}
+                  placeholder="Es. Ristrutturazione Bagno"
+                />
               </div>
+
+              {/* Cliente */}
               <div>
                 <Label>Cliente</Label>
-                <StyledInput name="clientName" value={editingQuote.clientName} onChange={handleDetailsChange} placeholder="Nome Cliente" />
+                <StyledInput
+                  name="clientName"
+                  value={editingQuote.clientName}
+                  onChange={handleDetailsChange}
+                  placeholder="Nome Cliente"
+                />
               </div>
+
+              {/* Data Emissione */}
               <div>
-                <Label>Data</Label>
-                <StyledInput name="date" type="date" value={editingQuote.date} onChange={handleDetailsChange} />
+                <Label>Data Emissione</Label>
+                <StyledInput
+                  name="date"
+                  type="date"
+                  value={editingQuote.date}
+                  onChange={handleDetailsChange}
+                />
               </div>
+
+              {/* --- NUOVI CAMPI AGGIUNTI --- */}
+
+              {/* Luogo */}
+              <div className="md:col-span-2">
+                <Label>Luogo intervento</Label>
+                <StyledInput
+                  name="address"
+                  value={editingQuote.address || ''}
+                  onChange={handleDetailsChange}
+                  placeholder="Es. Via Montenapoleone 12, Milano"
+                />
+              </div>
+
+              {/* Inizio Lavori (Manuale) */}
+              <div>
+                <Label>Inizio Lavori Previsto</Label>
+                <StyledInput
+                  name="estimatedStart"
+                  value={editingQuote.estimatedStart || ''}
+                  onChange={handleDetailsChange}
+                  placeholder="Es. Metà Settembre / 15/09/2024"
+                />
+              </div>
+
+              {/* Durata (Manuale - Sovrascrive il calcolo automatico) */}
+              <div>
+                <Label>Durata Lavori (Testo Libero)</Label>
+                <StyledInput
+                  name="duration"
+                  value={editingQuote.duration || ''}
+                  onChange={handleDetailsChange}
+                  placeholder="Es. 3 Giorni / 1 Settimana"
+                />
+                <p className="text-[10px] text-gray-400 mt-1 ml-1">
+                  Se lasciato vuoto, verrà calcolata in automatico dalle ore.
+                </p>
+              </div>
+              {/* --- FINE NUOVI CAMPI --- */}
+
+              {/* Note */}
               <div className="md:col-span-2">
                 <Label>Note Interne</Label>
-                <StyledTextArea name="notes" value={editingQuote.notes} onChange={handleDetailsChange} placeholder="Note..." />
+                <StyledTextArea
+                  name="notes"
+                  value={editingQuote.notes}
+                  onChange={handleDetailsChange}
+                  placeholder="Note visibili solo a te..."
+                />
               </div>
             </div>
           </div>
@@ -494,17 +581,23 @@ export default function EditQuotePage() { // Non servono più props qui
 
           </div>
 
+
+
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200/60 mb-8">
             <Label>Strategia Pagamenti</Label>
-            <div className="grid grid-cols-3 gap-2 mb-6">
+
+            {/* Modifica grid-cols-3 in grid-cols-2 o grid-cols-4 per farci stare il nuovo bottone */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
               {[
                 { id: 'SINGLE', label: 'Saldo Unico' },
                 { id: 'PERCENTAGE', label: 'Acconto %' },
-                { id: 'FIXED', label: 'Acconto Fisso' }
+                { id: 'FIXED', label: 'Acconto Fisso' },
+                { id: 'FIRST_DAY', label: 'Fine 1° Giorno' } // <--- NUOVO BOTTONE
               ].map(type => (
                 <button
                   key={type.id}
-                  onClick={() => setPaymentStrategy(type.id, type.id === 'PERCENTAGE' ? 30 : 500)}
+                  // Quando clicchi il nuovo bottone, impostiamo un valore di default (es. 1000€)
+                  onClick={() => setPaymentStrategy(type.id, type.id === 'PERCENTAGE' ? 30 : 1000)}
                   className={`py-2 text-xs font-bold rounded-lg border transition-all ${editingQuote.paymentType === type.id
                     ? 'bg-black text-white border-black'
                     : 'bg-white text-gray-500 border-gray-200 hover:border-gray-400'
@@ -515,6 +608,7 @@ export default function EditQuotePage() { // Non servono più props qui
               ))}
             </div>
 
+            {/* Input per PERCENTUALE (già esistente) */}
             {editingQuote.paymentType === 'PERCENTAGE' && (
               <div className="mb-4">
                 <Label>Percentuale Acconto (%)</Label>
@@ -526,6 +620,7 @@ export default function EditQuotePage() { // Non servono più props qui
               </div>
             )}
 
+            {/* Input per FISSO (già esistente) */}
             {editingQuote.paymentType === 'FIXED' && (
               <div className="mb-4">
                 <Label>Importo Acconto (€)</Label>
@@ -534,6 +629,22 @@ export default function EditQuotePage() { // Non servono più props qui
                   value={editingQuote.paymentValue}
                   onChange={(e) => setPaymentStrategy('FIXED', e.target.value)}
                 />
+              </div>
+            )}
+
+            {/* --- NUOVO INPUT PER 1° GIORNO --- */}
+            {editingQuote.paymentType === 'FIRST_DAY' && (
+              <div className="mb-4">
+                <Label>Importo da versare il 1° Giorno (€)</Label>
+                <StyledInput
+                  type="number"
+                  value={editingQuote.paymentValue}
+                  onChange={(e) => setPaymentStrategy('FIRST_DAY', e.target.value)}
+                  placeholder="Es. 1500"
+                />
+                <p className="text-[10px] text-gray-400 mt-1">
+                  Il saldo rimanente verrà calcolato automaticamente per la fine lavori.
+                </p>
               </div>
             )}
 
