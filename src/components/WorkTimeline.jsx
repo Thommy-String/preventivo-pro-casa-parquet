@@ -137,7 +137,7 @@ export default function WorkTimeline({ sections }) {
                   {/* PIN ARRIVO */}
                   <div className="absolute top-[-95px] md:top-[-105px] bottom-0 border-l-2 border-emerald-500/30 z-30" style={{ left: arrivalX }}>
                     <div className="absolute top-0 left-0 -translate-x-1/2 flex flex-col items-center">
-                      <div className="bg-emerald-600 text-white text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg mb-1 whitespace-nowrap flex items-center gap-1.5 uppercase tracking-tight">
+                      <div className="bg-green-500 text-white text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg mb-1 whitespace-nowrap flex items-center gap-1.5 uppercase tracking-tight">
                         <Truck size={14} /> Arrivo {arrivalTimeStr}
                       </div>
                       <div className="w-2.5 h-2.5 bg-emerald-600 rounded-full border-2 border-white shadow-sm" />
@@ -147,7 +147,7 @@ export default function WorkTimeline({ sections }) {
                   {/* PIN INIZIO */}
                   <div className="absolute top-[-55px] md:top-[-60px] bottom-0 border-l-2 border-blue-600/30 z-30" style={{ left: startX }}>
                     <div className="absolute top-0 left-0 -translate-x-1/2 flex flex-col items-center">
-                      <div className="bg-blue-600 text-white text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg mb-1 whitespace-nowrap flex items-center gap-1.5 uppercase tracking-tight">
+                      <div className="bg-blue-500 text-white text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg mb-1 whitespace-nowrap flex items-center gap-1.5 uppercase tracking-tight">
                         <Hammer size={14} /> Inizio {firstJobTime}
                       </div>
                       <div className="w-2.5 h-2.5 bg-blue-600 rounded-full border-2 border-white shadow-sm" />
@@ -157,7 +157,7 @@ export default function WorkTimeline({ sections }) {
                   {/* PIN FINE */}
                   <div className="absolute top-[-95px] md:top-[-105px] bottom-0 border-l-2 border-rose-800/30 z-30" style={{ left: lastActivityEndPos }}>
                     <div className="absolute top-0 left-0 -translate-x-1/2 flex flex-col items-center">
-                      <div className="bg-rose-800 text-white text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg mb-1 whitespace-nowrap flex items-center gap-1.5 uppercase tracking-tight">
+                      <div className="bg-rose-400 text-white text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg mb-1 whitespace-nowrap flex items-center gap-1.5 uppercase tracking-tight">
                         <DoorClosed size={14} /> Fine
                       </div>
                       <div className="w-2.5 h-2.5 bg-rose-800 rounded-full border-2 border-white shadow-sm" />

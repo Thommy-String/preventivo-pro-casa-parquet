@@ -44,6 +44,16 @@ const generateUniqueId = (prefix) => {
   return `${prefix}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 };
 
+// --- CONFIGURAZIONE COLORI STATO ---
+const STATUS_OPTIONS = [
+  { id: 'blue', bg: 'bg-blue-50', text: 'text-blue-600', dot: 'bg-blue-500', border: 'border-blue-200' },
+  { id: 'green', bg: 'bg-emerald-50', text: 'text-emerald-600', dot: 'bg-emerald-500', border: 'border-emerald-200' },
+  { id: 'yellow', bg: 'bg-amber-50', text: 'text-amber-700', dot: 'bg-amber-500', border: 'border-amber-200' },
+  { id: 'gray', bg: 'bg-gray-100', text: 'text-gray-600', dot: 'bg-gray-400', border: 'border-gray-200' },
+  { id: 'purple', bg: 'bg-purple-50', text: 'text-purple-600', dot: 'bg-purple-500', border: 'border-purple-200' },
+  { id: 'red', bg: 'bg-red-50', text: 'text-red-600', dot: 'bg-red-500', border: 'border-red-200' },
+];
+
 export default function EditQuotePage() { // Non servono più props qui
   const { quoteId } = useParams();
   const navigate = useNavigate();
@@ -54,6 +64,8 @@ export default function EditQuotePage() { // Non servono più props qui
     projectName: '',
     clientName: '',
     date: new Date().toISOString().split('T')[0],
+    statusText: 'In corso',
+    statusColor: 'blue',
     notes: '',
     sections: [],
     teamMembers: DEFAULT_TEAM,
@@ -408,6 +420,56 @@ export default function EditQuotePage() { // Non servono più props qui
                   placeholder="Nome Cliente"
                 />
               </div>
+
+              {/* --- CONTROLLO STATO (Testo + Colore) --- */}
+              <div className="md:col-span-2 border-t border-gray-100 pt-4 mt-2">
+                <Label>Stato del Preventivo</Label>
+                <div className="flex flex-col md:flex-row gap-4 items-start md:items-center bg-gray-50/50 p-3 rounded-xl border border-gray-100">
+                  
+                  {/* Input Testo */}
+                  <div className="w-full md:w-1/3">
+                    <StyledInput
+                      name="statusText"
+                      value={editingQuote.statusText || ''}
+                      onChange={handleDetailsChange}
+                      placeholder="Es. In Corso"
+                    />
+                  </div>
+
+                  {/* Selezione Colore */}
+                  <div className="flex items-center gap-2">
+                    {STATUS_OPTIONS.map((option) => (
+                      <button
+                        key={option.id}
+                        onClick={() => setEditingQuote(prev => ({ ...prev, statusColor: option.id }))}
+                        className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                          editingQuote.statusColor === option.id 
+                            ? 'ring-2 ring-offset-2 ring-black scale-110' 
+                            : 'hover:scale-110 opacity-70 hover:opacity-100'
+                        }`}
+                        title={option.id}
+                      >
+                        <div className={`w-6 h-6 rounded-full ${option.bg} border ${option.border}`}></div>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Anteprima Live */}
+                  <div className="ml-auto hidden md:block">
+                    <span className="text-[10px] uppercase font-bold text-gray-400 mr-2">Anteprima:</span>
+                    {(() => {
+                      const currentStyle = STATUS_OPTIONS.find(o => o.id === (editingQuote.statusColor || 'blue')) || STATUS_OPTIONS[0];
+                      return (
+                        <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-[13px] font-medium border ${currentStyle.bg} ${currentStyle.text} ${currentStyle.border}`}>
+                          <div className={`w-2 h-2 rounded-full animate-pulse ${currentStyle.dot}`} />
+                          {editingQuote.statusText || 'In elaborazione'}
+                        </div>
+                      );
+                    })()}
+                  </div>
+                </div>
+              </div>
+              {/* --- FINE CONTROLLO STATO --- */}
 
               {/* Data Emissione */}
               <div>
