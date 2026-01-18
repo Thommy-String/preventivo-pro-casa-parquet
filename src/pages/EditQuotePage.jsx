@@ -69,6 +69,7 @@ export default function EditQuotePage() { // Non servono più props qui
     notes: '',
     sections: [],
     teamMembers: DEFAULT_TEAM,
+    daySettings: {},
   });
 
   // --- 1. CARICAMENTO DATI DA FIREBASE ---
@@ -628,6 +629,7 @@ export default function EditQuotePage() { // Non servono più props qui
               sections={editingQuote.sections}
               onSectionChange={handleSectionChange}
               setEditingQuote={setEditingQuote}
+              daySettings={editingQuote.daySettings || {}}
             />
           )}
 

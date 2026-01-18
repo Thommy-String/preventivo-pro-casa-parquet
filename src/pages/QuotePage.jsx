@@ -109,34 +109,34 @@ export default function QuotePage() {
               </div>
 
               {/* RIGA 2: STATO (Dinamico) */}
-      <div className="flex items-center gap-2.5 text-gray-400">
-        <div className="w-[18px] flex justify-center"><div className="w-3.5 h-3.5 border-2 border-gray-300 border-dashed rounded-full" /></div>
-        <span className="text-[15px] font-medium">Stato</span>
-      </div>
+              <div className="flex items-center gap-2.5 text-gray-400">
+                <div className="w-[18px] flex justify-center"><div className="w-3.5 h-3.5 border-2 border-gray-300 border-dashed rounded-full" /></div>
+                <span className="text-[15px] font-medium">Stato</span>
+              </div>
 
-      <div>
-        {(() => {
-           // Mappa i colori salvati con lo stile visivo
-           const statusColors = {
-             blue:   { bg: 'bg-blue-50', text: 'text-blue-600', dot: 'bg-blue-500', border: 'border-blue-100' },
-             green:  { bg: 'bg-emerald-50', text: 'text-emerald-600', dot: 'bg-emerald-500', border: 'border-emerald-100' },
-             yellow: { bg: 'bg-amber-50', text: 'text-amber-700', dot: 'bg-amber-500', border: 'border-amber-100' },
-             gray:   { bg: 'bg-gray-100', text: 'text-gray-600', dot: 'bg-gray-400', border: 'border-gray-200' },
-             purple: { bg: 'bg-purple-50', text: 'text-purple-600', dot: 'bg-purple-500', border: 'border-purple-100' },
-             red:    { bg: 'bg-red-50', text: 'text-red-600', dot: 'bg-red-500', border: 'border-red-100' },
-           };
-           
-           // Recupera lo stile (usa blue come fallback)
-           const style = statusColors[quote.statusColor] || statusColors.blue;
-           
-           return (
-            <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-[13px] font-medium border ${style.bg} ${style.text} ${style.border}`}>
-              <div className={`w-2 h-2 rounded-full animate-pulse ${style.dot}`} />
-              {quote.statusText || "In elaborazione"}
-            </div>
-           );
-        })()}
-      </div>
+              <div>
+                {(() => {
+                  // Mappa i colori salvati con lo stile visivo
+                  const statusColors = {
+                    blue: { bg: 'bg-blue-50', text: 'text-blue-600', dot: 'bg-blue-500', border: 'border-blue-100' },
+                    green: { bg: 'bg-emerald-50', text: 'text-emerald-600', dot: 'bg-emerald-500', border: 'border-emerald-100' },
+                    yellow: { bg: 'bg-amber-50', text: 'text-amber-700', dot: 'bg-amber-500', border: 'border-amber-100' },
+                    gray: { bg: 'bg-gray-100', text: 'text-gray-600', dot: 'bg-gray-400', border: 'border-gray-200' },
+                    purple: { bg: 'bg-purple-50', text: 'text-purple-600', dot: 'bg-purple-500', border: 'border-purple-100' },
+                    red: { bg: 'bg-red-50', text: 'text-red-600', dot: 'bg-red-500', border: 'border-red-100' },
+                  };
+
+                  // Recupera lo stile (usa blue come fallback)
+                  const style = statusColors[quote.statusColor] || statusColors.blue;
+
+                  return (
+                    <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-[13px] font-medium border ${style.bg} ${style.text} ${style.border}`}>
+                      <div className={`w-2 h-2 rounded-full animate-pulse ${style.dot}`} />
+                      {quote.statusText || "In elaborazione"}
+                    </div>
+                  );
+                })()}
+              </div>
 
               {/* --- RIGA 4: DURATA (Pulita) --- */}
               <div className="flex items-center gap-2.5 text-gray-400">
@@ -164,9 +164,11 @@ export default function QuotePage() {
 
         <hr className="border-[#f0f0f0] mx-10 md:mx-24 mb-16" />
 
+        {/* --- CAMBIA QUESTA PARTE --- */}
         <div className="px-0 md:px-10 mb-12">
-          {quote.sections && quote.sections.some(s => s.durationHours > 0) ? (
-            <WorkTimeline sections={quote.sections} />
+          {quote.sections && quote.sections.some(s => s.slots && s.slots.length > 0) ? (
+            <WorkTimeline sections={quote.sections}
+            daySettings={quote.daySettings || {}} />
           ) : (
             <p className="px-10 md:px-24 text-[11px] text-[#86868b] italic">Cronoprogramma non disponibile.</p>
           )}
