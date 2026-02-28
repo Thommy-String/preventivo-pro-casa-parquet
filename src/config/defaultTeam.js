@@ -12,6 +12,7 @@ export const DEFAULT_TEAM = [
     id: 'default-2',
     name: "Thomas",
     role: "Commerciale",
+    phone:"00393342221212",
     photoUrl: "https://ipizlwahdmkiweecetsx.supabase.co/storage/v1/object/public/demo/thommy-Giacca%20e%20cravatta.jpg",
     quirk: "Il suo parquet preferito è la spina francese colore rovere naturale"
   }

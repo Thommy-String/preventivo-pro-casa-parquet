@@ -25,6 +25,7 @@ export default function TeamEditor({ teamMembers = [], setEditingQuote }) {
       name: '',
       role: '',
       photoUrl: '',
+      phone: '', // Aggiunto campo telefono
       quirk: ''
     };
     setEditingQuote(prev => ({
@@ -158,6 +159,17 @@ export default function TeamEditor({ teamMembers = [], setEditingQuote }) {
                     placeholder="Capo Posa"
                     className="w-full bg-transparent border-b border-gray-200 focus:border-purple-500 outline-none text-xs font-medium text-gray-500 pb-1 transition-colors"
                   />
+                </div>
+                <div>
+                  <Label>WhatsApp (opzionale)</Label>
+                  <input 
+                    type="text"
+                    value={member.phone || ''}
+                    onChange={(e) => updateMember(idx, 'phone', e.target.value)}
+                    placeholder="es. 0039334..."
+                    className="w-full px-4 py-2 bg-gray-50 border-none rounded-2xl text-sm font-medium focus:ring-2 focus:ring-purple-200 outline-none transition-all"
+                  />
+                  <p className="text-[10px] text-gray-400 mt-1 ml-1 leading-tight">Inserisci il numero col prefisso internazionale (es. 0039...)</p>
                 </div>
               </div>
             </div>

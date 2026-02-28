@@ -45,6 +45,24 @@ export const mockQuote = {
     vat: 1496.00,
     total: 8296.00,
   },
+
+  teamMembers: [
+    {
+      id: 'default-1',
+      name: "Andrea",
+      role: "Capo Parquettista",
+      photoUrl: "https://ipizlwahdmkiweecetsx.supabase.co/storage/v1/object/public/demo/Screenshot%202026-01-10%20alle%2011.38.59.png",
+      quirk: "Ha lavorato 9 anni in Germania del Nord in edilizia e posa pavimenti. Vederlo posare è un'arte."
+    },
+    {
+      id: 'default-2',
+      name: "Thomas",
+      role: "Commerciale",
+      phone: "00393342221212",
+      photoUrl: "https://ipizlwahdmkiweecetsx.supabase.co/storage/v1/object/public/demo/thommy-Giacca%20e%20cravatta.jpg",
+      quirk: "Il suo parquet preferito è la spina francese colore rovere naturale"
+    }
+  ],
   
   notes: "Questo preventivo ha una validità di 30 giorni. I tempi di consegna del materiale sono stimati in 15 giorni lavorativi dalla conferma dell'ordine."
 };

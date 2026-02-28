@@ -33,16 +33,17 @@ export default function QuoteSections({ sections }) {
 
                             {/* Foto (Se presenti) */}
                             {section.photos && section.photos.length > 0 && (
-                                <div className="grid grid-cols-2 gap-4 mt-8 mb-8">
+                                <div className={`grid gap-6 mt-8 mb-10 ${section.photos.length === 1 ? 'grid-cols-1 max-w-4xl' : 'grid-cols-1 md:grid-cols-2 max-w-5xl'}`}>
                                     {section.photos.map((photo, i) => (
-                                        <div key={i} className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-[#f9f9f9] border border-black/5">
+                                        <div key={i} className="relative aspect-[4/3] md:aspect-[4/3] rounded-[24px] overflow-hidden bg-[#f9f9f9] border border-black/5 shadow-sm">
                                             <img
                                                 src={photo.url}
                                                 alt={`Work detail ${i}`}
                                                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                                             />
-                                            {photo.type && (
-                                                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide text-[#1d1d1f] shadow-sm">
+                                            {/* Mostra l'etichetta solo se ci sono entrambe le foto */}
+                                            {section.photos.length > 1 && photo.type && (
+                                                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider text-[#1d1d1f] shadow-sm">
                                                     {photo.type === 'before' ? 'Attuale' : 'Previsto'}
                                                 </div>
                                             )}

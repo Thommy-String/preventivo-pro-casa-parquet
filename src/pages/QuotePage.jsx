@@ -43,7 +43,7 @@ export default function QuotePage() {
   const displayDuration = quote.duration || (calculatedDays > 0 ? `${calculatedDays} Giorni` : "Da definire");
 
   return (
-    <div className="min-h-screen font-sans selection:bg-[#cce9ff] pb-20 pt-6 md:pt-12">
+    <div className="min-h-screen font-sans selection:bg-[#cce9ff] pb-20 pt-6 md:pt-12 overflow-x-hidden">
 
       <main className="max-w-[960px] mx-auto bg-white min-h-[1000px] shadow-[0_24px_60px_-12px_rgba(0,0,0,0.06)] sm:rounded-[32px] overflow-hidden relative">
 
@@ -63,99 +63,96 @@ export default function QuotePage() {
             </div>
 
             {/* 3. GRIGLIA PROPRIETÀ */}
-            <div className="grid grid-cols-[140px_1fr] gap-y-5 items-center">
+            <div className="flex flex-col gap-1 w-full">
 
-              {/* --- RIGA 1: CLIENTE (Nuova voce separata) --- */}
-              <div className="flex items-center gap-2.5 text-gray-400">
-                <User size={18} /> {/* Icona singola per il cliente */}
-                <span className="text-[15px] font-medium">Cliente</span>
-              </div>
-
-              <div>
-                <div className="inline-flex items-center gap-2 pl-1 pr-3 py-1 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 transition-colors cursor-default">
-                  <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-[10px] font-bold uppercase">
-                    {quote.clientName ? quote.clientName.charAt(0) : 'C'}
-                  </div>
-                  <span className="text-[13px] font-medium text-gray-700">{quote.clientName}</span>
+              <div className="group flex items-center min-h-[34px] py-1 px-2 -mx-2 hover:bg-gray-100/50 rounded-md transition-colors">
+                <div className="w-[180px] flex items-center gap-2 text-[14px] text-gray-500 shrink-0">
+                  <User size={16} className="text-gray-400 opacity-80" />
+                  <span>Cliente</span>
                 </div>
-              </div>
-
-              {/* --- RIGA 2: TEAM (Solo Thomas e Andrea) --- */}
-              <div className="flex items-center gap-2.5 text-gray-400">
-                <Users size={18} />
-                <span className="text-[15px] font-medium">Team</span>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2">
-                {/* Chip Thomas */}
-                <div className="flex items-center gap-2 pl-1 pr-3 py-1 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 transition-colors cursor-default">
-                  <img
-                    src="https://ipizlwahdmkiweecetsx.supabase.co/storage/v1/object/public/demo/thommy-Giacca%20e%20cravatta.jpg"
-                    alt="Thomas"
-                    className="w-6 h-6 rounded-full object-cover"
-                  />
-                  <span className="text-[13px] font-medium text-gray-700">Thomas</span>
-                </div>
-
-                {/* Chip Andrea (Parquettista) */}
-                <div className="flex items-center gap-2 pl-1 pr-3 py-1 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 transition-colors cursor-default">
-                  <img
-                    src="https://ipizlwahdmkiweecetsx.supabase.co/storage/v1/object/public/demo/Screenshot%202026-01-10%20alle%2011.38.59.png"
-                    alt="Andrea"
-                    className="w-6 h-6 rounded-full object-cover"
-                  />
-                  <span className="text-[13px] font-medium text-gray-700">Andrea</span>
-                </div>
-              </div>
-
-              {/* RIGA 2: STATO (Dinamico) */}
-              <div className="flex items-center gap-2.5 text-gray-400">
-                <div className="w-[18px] flex justify-center"><div className="w-3.5 h-3.5 border-2 border-gray-300 border-dashed rounded-full" /></div>
-                <span className="text-[15px] font-medium">Stato</span>
-              </div>
-
-              <div>
-                {(() => {
-                  // Mappa i colori salvati con lo stile visivo
-                  const statusColors = {
-                    blue: { bg: 'bg-blue-50', text: 'text-blue-600', dot: 'bg-blue-500', border: 'border-blue-100' },
-                    green: { bg: 'bg-emerald-50', text: 'text-emerald-600', dot: 'bg-emerald-500', border: 'border-emerald-100' },
-                    yellow: { bg: 'bg-amber-50', text: 'text-amber-700', dot: 'bg-amber-500', border: 'border-amber-100' },
-                    gray: { bg: 'bg-gray-100', text: 'text-gray-600', dot: 'bg-gray-400', border: 'border-gray-200' },
-                    purple: { bg: 'bg-purple-50', text: 'text-purple-600', dot: 'bg-purple-500', border: 'border-purple-100' },
-                    red: { bg: 'bg-red-50', text: 'text-red-600', dot: 'bg-red-500', border: 'border-red-100' },
-                  };
-
-                  // Recupera lo stile (usa blue come fallback)
-                  const style = statusColors[quote.statusColor] || statusColors.blue;
-
-                  return (
-                    <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-[13px] font-medium border ${style.bg} ${style.text} ${style.border}`}>
-                      <div className={`w-2 h-2 rounded-full animate-pulse ${style.dot}`} />
-                      {quote.statusText || "In elaborazione"}
+                <div className="flex-1 flex items-center">
+                  <div className="inline-flex items-center gap-2 pl-1 pr-3 py-1 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 transition-colors cursor-default">
+                    <div className="w-5 h-5 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-[9px] font-bold uppercase">
+                      {quote.clientName ? quote.clientName.charAt(0) : 'C'}
                     </div>
-                  );
-                })()}
+                    <span className="text-[13px] font-medium text-gray-700">{quote.clientName}</span>
+                  </div>
+                </div>
               </div>
 
-              {/* --- RIGA 4: DURATA (Pulita) --- */}
-              <div className="flex items-center gap-2.5 text-gray-400">
-                <Calendar size={18} />
-                <span className="text-[15px] font-medium">Durata</span>
+              <div className="group flex items-center min-h-[34px] py-1 px-2 -mx-2 hover:bg-gray-100/50 rounded-md transition-colors">
+                <div className="w-[180px] flex items-center gap-2 text-[14px] text-gray-500 shrink-0">
+                  <Users size={16} className="text-gray-400 opacity-80" />
+                  <span>Team</span>
+                </div>
+                <div className="flex-1 flex flex-wrap items-center gap-2">
+                  <div className="inline-flex items-center gap-2 pl-1 pr-3 py-1 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 transition-colors cursor-default">
+                    <img src="https://ipizlwahdmkiweecetsx.supabase.co/storage/v1/object/public/demo/thommy-Giacca%20e%20cravatta.jpg" alt="Thomas" className="w-5 h-5 rounded-full object-cover" />
+                    <span className="text-[13px] font-medium text-gray-700">Thomas</span>
+                  </div>
+                  <div className="inline-flex items-center gap-2 pl-1 pr-3 py-1 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 transition-colors cursor-default">
+                    <img src="https://ipizlwahdmkiweecetsx.supabase.co/storage/v1/object/public/demo/Screenshot%202026-01-10%20alle%2011.38.59.png" alt="Andrea" className="w-5 h-5 rounded-full object-cover" />
+                    <span className="text-[13px] font-medium text-gray-700">Andrea</span>
+                  </div>
+                </div>
               </div>
 
-              <div className="text-[15px] text-[#1d1d1f] font-medium">
-                {displayDuration} di lavoro previsto
+              <div className="group flex items-center min-h-[34px] py-1 px-2 -mx-2 hover:bg-gray-100/50 rounded-md transition-colors">
+                <div className="w-[180px] flex items-center gap-2 text-[14px] text-gray-500 shrink-0">
+                  <div className="w-4 h-4 flex flex-col justify-center opacity-80 pl-[2px]"><div className="w-3.5 h-3.5 border-2 border-gray-400 border-dashed rounded-full" /></div>
+                  <span className="pl-1">Stato</span>
+                </div>
+                <div className="flex-1 flex items-center">
+                  {(() => {
+                    const statusColors = {
+                      blue: { bg: 'bg-blue-50', text: 'text-blue-600', dot: 'bg-blue-500', border: 'border-blue-100' },
+                      green: { bg: 'bg-emerald-50', text: 'text-emerald-600', dot: 'bg-emerald-500', border: 'border-emerald-100' },
+                      yellow: { bg: 'bg-amber-50', text: 'text-amber-700', dot: 'bg-amber-500', border: 'border-amber-100' },
+                      gray: { bg: 'bg-gray-100', text: 'text-gray-600', dot: 'bg-gray-400', border: 'border-gray-200' },
+                      purple: { bg: 'bg-purple-50', text: 'text-purple-600', dot: 'bg-purple-500', border: 'border-purple-100' },
+                      red: { bg: 'bg-red-50', text: 'text-red-600', dot: 'bg-red-500', border: 'border-red-100' },
+                    };
+                    const style = statusColors[quote.statusColor] || statusColors.blue;
+                    return (
+                      <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[13px] font-medium border ${style.bg} ${style.text} ${style.border}`}>
+                        <div className={`w-2 h-2 rounded-full animate-pulse ${style.dot}`} />
+                        {quote.statusText || "In elaborazione"}
+                      </div>
+                    );
+                  })()}
+                </div>
               </div>
 
-              {/* --- RIGA 5: LUOGO --- */}
-              <div className="flex items-center gap-2.5 text-gray-400">
-                <MapPin size={18} />
-                <span className="text-[15px] font-medium">Luogo</span>
+              {quote.estimatedStart && (
+                <div className="group flex items-center min-h-[34px] py-1 px-2 -mx-2 hover:bg-gray-100/50 rounded-md transition-colors">
+                  <div className="w-[180px] flex items-center gap-2 text-[14px] text-gray-500 shrink-0">
+                    <Calendar size={16} className="text-gray-400 opacity-80" />
+                    <span>Inizio Previsto</span>
+                  </div>
+                  <div className="flex-1 flex items-center">
+                    <span className="text-[14px] text-[#1d1d1f]">{quote.estimatedStart}</span>
+                  </div>
+                </div>
+              )}
+
+              <div className="group flex items-center min-h-[34px] py-1 px-2 -mx-2 hover:bg-gray-100/50 rounded-md transition-colors">
+                <div className="w-[180px] flex items-center gap-2 text-[14px] text-gray-500 shrink-0">
+                  <Calendar size={16} className="text-gray-400 opacity-80" />
+                  <span>Durata</span>
+                </div>
+                <div className="flex-1 flex items-center">
+                  <span className="text-[14px] text-[#1d1d1f] hover:text-black cursor-default">{displayDuration} di lavoro previsto</span>
+                </div>
               </div>
 
-              <div className="text-[15px] text-[#1d1d1f] font-medium underline decoration-gray-300 decoration-1 underline-offset-2">
-                {quote.address || "Milano, IT"}
+              <div className="group flex items-center min-h-[34px] py-1 px-2 -mx-2 hover:bg-gray-100/50 rounded-md transition-colors">
+                <div className="w-[180px] flex items-center gap-2 text-[14px] text-gray-500 shrink-0">
+                  <MapPin size={16} className="text-gray-400 opacity-80" />
+                  <span>Luogo</span>
+                </div>
+                <div className="flex-1 flex items-center">
+                  <span className="text-[14px] text-[#1d1d1f] underline decoration-gray-300 decoration-1 underline-offset-2 hover:decoration-gray-400 cursor-pointer">{quote.address || "Milano, IT"}</span>
+                </div>
               </div>
 
             </div>
